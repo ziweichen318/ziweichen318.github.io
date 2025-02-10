@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Riot API Application</title>
+    <title>Riot Rank & Status Checker</title>
 </head>
 <body>
-    <h1>Welcome to My Riot API Application</h1>
-    <p>This page is for Riot API verification.</p>
+    <h1>Welcome to Riot Rank & Status Checker</h1>
+    <p>This page is for Riot API verification and will be used in a mobile app.</p>
+    <input type="text" id="username" placeholder="Enter Summoner Name">
+    <button onclick="checkRank()">Check Rank</button>
+    <p id="result"></p>
+    
+    <script>
+        function checkRank() {
+            let username = document.getElementById("username").value;
+            document.getElementById("result").innerText = "Fetching rank for: " + username;
+        }
+    </script>
 </body>
 </html>
