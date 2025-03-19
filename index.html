@@ -1,81 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Riot VALORANT Rank & Status Checker</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    input, button { padding: 10px; margin: 5px; }
-    .output { margin-top: 20px; background: #f9f9f9; padding: 10px; border: 1px solid #ccc; }
-  </style>
-</head>
-<body>
-  <h1>Riot VALORANT Rank & Status Checker</h1>
-  <p>This Mobile APP provides query for RANK and STATUS.</p>
-  
-  <!-- 輸入區 -->
-  <div>
-    <label for="summoner">Summoner Name:</label>
-    <input type="text" id="summoner" placeholder="Enter Summoner Name" />
-  </div>
-  <div>
-    <button onclick="checkRank()">Check Rank</button>
-    <button onclick="checkStatus()">Check Status</button>
-  </div>
-  
-  <!-- 結果展示區 -->
-  <div class="output">
-    <h2>Results:</h2>
-    <pre id="result">No data yet.</pre>
-  </div>
-  
-  <script>
-    // 注意：這裡的 API_BASE 僅為範例，實際應根據後端設定
-    const API_BASE = "https://api.example.com"; // 請替換為實際使用的後端網址
+<script>
+  // 假設你的後端部署在同一個網域下，例如 https://yourdomain.com
+  const API_BASE = "https://yourdomain.com/api";
 
-    // 模擬查詢 Rank 的函式
-    function checkRank() {
-      let summoner = document.getElementById("summoner").value.trim();
-      if (!summoner) {
-        alert("Please enter a summoner name.");
-        return;
-      }
-      document.getElementById("result").innerText = "Fetching rank for: " + summoner + " ...";
-      
-      // 實際上應該由後端調用 Riot API 的 VAL-排名-V1 端點，例如：
-      // GET /val/ranked/v1/leaderboards/by-act/{actId}
-      // 並根據 summoner 或其他參數進行查詢。
-      // 以下僅模擬 API 回應。
-      setTimeout(() => {
-        let rankData = {
-          summoner: summoner,
-          rank: "Diamond II",
-          leaguePoints: 75,
-          wins: 405,
-          losses: 351
-        };
-        document.getElementById("result").innerText = JSON.stringify(rankData, null, 2);
-      }, 1500);
+  async function checkRank() {
+    let summoner = document.getElementById("summoner").value.trim();
+    if (!summoner) {
+      alert("Please enter a summoner name.");
+      return;
     }
-    
-    // 模擬查詢 VALORANT 狀態的函式
-    function checkStatus() {
-      document.getElementById("result").innerText = "Fetching VALORANT platform status...";
-      
-      // 實際上應該由後端調用 Riot API 的 VAL-狀態-V1 端點，例如：
-      // GET /val/status/v1/platform-data
-      // 以下僅模擬 API 回應。
-      setTimeout(() => {
-        let statusData = {
-          platform: "NA",
-          status: "Online",
-          maintenance: false,
-          message: "All systems operational."
-        };
-        document.getElementById("result").innerText = JSON.stringify(statusData, null, 2);
-      }, 1500);
+    document.getElementById("result").innerText = "Fetching rank for: " + summoner + " ...";
+
+    try {
+      const res = await fetch(`${API_BASE}/rank?summoner=${encodeURIComponent(summoner)}`);
+      if (!res.ok) throw new Error("Network response was not ok");
+      const data = await res.json();
+      document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+    } catch (error) {
+      document.getElementById("result").innerText = "Error: " + error.message;
     }
-  </script>
-</body>
-</html>
+  }
+
+  async function checkStatus() {
+    document.getElementById("result").innerText = "Fetching VALORANT platform status...";
+
+    try {
+      const res = await fetch(`${API_BASE}/status`);
+      if (!res.ok) throw new Error("Network response was not ok");
+      const data = await res.json();
+      document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+    } catch (error) {
+      document.getElementById("result").innerText = "Error: " + error.message;
+    }
+  }
+</script>
