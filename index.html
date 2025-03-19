@@ -1,6 +1,6 @@
 <script>
-  // 假設你的後端部署在同一個網域下，例如 https://yourdomain.com
-  const API_BASE = "https://yourdomain.com/api";
+  // 假設後端部署在同一個網域，或請調整為後端網址
+  const API_BASE = "http://localhost:3000/api";
 
   async function checkRank() {
     let summoner = document.getElementById("summoner").value.trim();
@@ -9,7 +9,7 @@
       return;
     }
     document.getElementById("result").innerText = "Fetching rank for: " + summoner + " ...";
-
+  
     try {
       const res = await fetch(`${API_BASE}/rank?summoner=${encodeURIComponent(summoner)}`);
       if (!res.ok) throw new Error("Network response was not ok");
@@ -19,10 +19,10 @@
       document.getElementById("result").innerText = "Error: " + error.message;
     }
   }
-
+  
   async function checkStatus() {
     document.getElementById("result").innerText = "Fetching VALORANT platform status...";
-
+  
     try {
       const res = await fetch(`${API_BASE}/status`);
       if (!res.ok) throw new Error("Network response was not ok");
