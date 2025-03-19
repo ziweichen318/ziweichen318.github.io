@@ -5,7 +5,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // 請將 YOUR_API_KEY 替換為你的 Riot API 金鑰
-const API_KEY = 'YOUR_API_KEY';
+const API_KEY = 'RGAPI-d5aa29fb-e9f7-42d9-8b6c-be2b1f037785';
 
 // 為了讓前端可以呼叫 API，使用 JSON 格式解析
 app.use(express.json());
